@@ -3,6 +3,7 @@ package nz.ac.auckland.se281;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -193,41 +194,38 @@ public class MapEngine {
       fuelCostTotal += shortestPath.get(i).getFuelCost();
     }
 
-    Set<String> continentsVisited =
-        new LinkedHashSet<>(); // dont need a class for contintents right?
-    // Collect unique continents visited
+    Set<String> continentsVisited = new LinkedHashSet<>();
+    Map<String, Integer> fuelPerContinent = new LinkedHashMap<>();
+
+    // Step 1: Collect continents in order of appearance, dont need a continent class right?
     for (Country country : shortestPath) {
-      if (!continentsVisited.contains(country.getContinent())) {
-        continentsVisited.add(country.getContinent());
-      }
+      continentsVisited.add(country.getContinent());
     }
 
-    // Calculate fuel cost per continent
-    int fuelCostPerContinent = 0;
-    for (Country country : shortestPath) {
-      String continent = country.getContinent();
-      int fuelCost = country.getFuelCost();
-      fuelCostPerContinent += fuelCost;
-      // wrong!
+    // Step 2: Sum fuel cost for intermediate countries only
+    for (int i = 1; i < shortestPath.size() - 1; i++) {
+      Country intermediate = shortestPath.get(i);
+      String continent = intermediate.getContinent();
+      int fuelCost = intermediate.getFuelCost();
+
+      fuelPerContinent.put(continent, fuelPerContinent.getOrDefault(continent, 0) + fuelCost);
     }
 
-    // // Format continents
-    // StringBuilder formattedCountriesVisited = new StringBuilder("[");
-    // for (String continent : continentsVisited) {
-    //   formattedCountriesVisited.append(continent);
-    //   formattedCountriesVisited.append("("+ Integer.toString(fuelCostPerContinent.get(continent))
-    // +")");
-    //   formattedCountriesVisited.append(", ");
-    // }
-    // if (formattedCountriesVisited.length() > 1) {
-    //   formattedCountriesVisited.setLength(formattedCountriesVisited.length() - 2); // Remove
-    // trailing comma and space
-    // }
-    // formattedCountriesVisited.append("]");
+    // Format continents
+    StringBuilder formattedContinents = new StringBuilder("[");
+    for (String continent : continentsVisited) {
+      int fuel = fuelPerContinent.getOrDefault(continent, 0);
+      formattedContinents.append(continent).append(" (").append(fuel).append("), ");
+    }
+    // Remove trailing comma and space
+    if (formattedContinents.length() > 1) {
+      formattedContinents.setLength(formattedContinents.length() - 2);
+    }
+    formattedContinents.append("]");
 
     // Final message
     MessageCli.ROUTE_INFO.printMessage(formattedRoute.toString());
     MessageCli.FUEL_INFO.printMessage(Integer.toString(fuelCostTotal));
-    // MessageCli.CONTINENT_INFO.printMessage(formattedCountriesVisited.toString());
+    MessageCli.CONTINENT_INFO.printMessage(formattedContinents.toString());
   }
 }
