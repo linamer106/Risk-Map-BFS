@@ -1,8 +1,12 @@
 package nz.ac.auckland.se281;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
 
 /** This class is the main entry point. */
 public class MapEngine {
@@ -118,17 +122,44 @@ public class MapEngine {
     return capitalizedName.toString().trim();
   }
 
+  private List<Country> shortestPathToDestination(
+      Country sourceCountry, Country destinationCountry) {
+
+    // BFS setup
+    Queue<Country> queue = new LinkedList<>();
+    Set<Country> visited = new HashSet<>();
+    Map<Country, Country> parentMap = new HashMap<>();
+
+    queue.add(sourceCountry);
+    visited.add(sourceCountry);
+
+    while (!queue.isEmpty()) {
+      Country current = queue.poll();
+
+      // BFS neighbors
+      for (Country neighbor : current.getNeighbours()) {
+        if (!visited.contains(neighbor)) {
+          queue.add(neighbor);
+          visited.add(neighbor);
+          parentMap.put(neighbor, current); // track how we reached this node
+        }
+      }
+    }
+
+    return null; // if no path found
+  }
+
   /** this method is invoked when the user run the command route. */
   public void showRoute() {
     MessageCli.INSERT_SOURCE.printMessage();
 
-    String sourceName = countryInputCheck().getName(); // do i want it in string or country?
+    Country sourceCountry = countryInputCheck();
 
     MessageCli.INSERT_DESTINATION.printMessage();
 
-    String destinationName = countryInputCheck().getName(); // same Q here...
+    Country destinationCountry = countryInputCheck();
 
-    if (sourceName.equals(destinationName)) {
+    if (sourceCountry.equals(destinationCountry)) {
       MessageCli.NO_CROSSBORDER_TRAVEL.printMessage();
       return;
     }
