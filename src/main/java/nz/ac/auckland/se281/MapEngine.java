@@ -56,57 +56,46 @@ public class MapEngine {
     return country;
   }
 
+  private Country countryInputCheck() {
+    while (true) {
+      String input = Utils.scanner.nextLine().trim();
+      try {
+        return getCountryInfo(input);
+      } catch (InvalidCountryNameException e) {
+        MessageCli.INVALID_COUNTRY.printMessage(e.getMessage());
+      }
+    }
+  }
+
   public void showInfoCountry() {
     MessageCli.INSERT_COUNTRY.printMessage(); // Show prompt once at start
 
-    //     try {
-    //   method(...);
-    // } catch (MyCoolException e) {
-    //   // do something
+    Country country = countryInputCheck();
+
+    // // Handle empty input
+    // if (countryName.isEmpty()) {
+    //   MessageCli.INVALID_COUNTRY.printMessage(countryName);
+    //   continue;
     // }
 
-    // public RETURN_TYPE method(...) {
-    //   ...
-    //   throw new MyCoolException();
-    //   ...
-    // }
+    // if (country != null) {
 
-    while (true) {
-      String countryName = Utils.scanner.nextLine().trim();
-
-      try {
-        Country country = getCountryInfo(countryName);
-
-        // // Handle empty input
-        // if (countryName.isEmpty()) {
-        //   MessageCli.INVALID_COUNTRY.printMessage(countryName);
-        //   continue;
-        // }
-
-        // if (country != null) {
-
-        List<Country> neighbours = country.getNeighbours();
-        StringBuilder names = new StringBuilder("[");
-        for (int i = 0; i < neighbours.size(); i++) {
-          names.append(neighbours.get(i).getName());
-          if (i < neighbours.size() - 1) {
-            names.append(", ");
-          }
-        }
-        names.append("]");
-
-        MessageCli.COUNTRY_INFO.printMessage(
-            country.getName(),
-            country.getContinent(),
-            String.valueOf(country.getFuelCost()),
-            names.toString());
-        break; // Exit loop after successful output
-        // }
-      } catch (InvalidCountryNameException e) {
-        MessageCli.INVALID_COUNTRY.printMessage(
-            e.getMessage()); // why e. thing not just countryName?
+    List<Country> neighbours = country.getNeighbours();
+    StringBuilder names = new StringBuilder("[");
+    for (int i = 0; i < neighbours.size(); i++) {
+      names.append(neighbours.get(i).getName());
+      if (i < neighbours.size() - 1) {
+        names.append(", ");
       }
     }
+    names.append("]");
+
+    MessageCli.COUNTRY_INFO.printMessage(
+        country.getName(),
+        country.getContinent(),
+        String.valueOf(country.getFuelCost()),
+        names.toString()); // Exit loop after successful output
+    // }
   }
 
   public String getCountryNameCapsFirstLetter(String name) {
@@ -130,5 +119,40 @@ public class MapEngine {
   }
 
   /** this method is invoked when the user run the command route. */
-  public void showRoute() {}
+  public void showRoute() {
+    // MessageCli.INSERT_SOURCE.printMessage();
+
+    // String sourceName = Utils.scanner.nextLine().trim();
+    // String destinationName = Utils.scanner.nextLine().trim();
+
+    // try {
+    //   Country source = getCountryInfo(sourceName);
+    //   Country destination = getCountryInfo(destinationName);
+
+    //   if (source.equals(destination)) {
+    //     MessageCli.NO_CROSSBORDER_TRAVEL.printMessage();
+    //     return;
+    //   }
+
+    //   List<Country> route = Utils.findShortestRoute(source, destination, countriesMap);
+    //   if (route == null || route.isEmpty()) {
+    //     throw new InvalidCountryNameException(
+    //         "No route found between " + sourceName + " and " + destinationName);
+    //   }
+
+    //   StringBuilder routeNames = new StringBuilder("[");
+    //   for (int i = 0; i < route.size(); i++) {
+    //     routeNames.append(route.get(i).getName());
+    //     if (i < route.size() - 1) {
+    //       routeNames.append(", ");
+    //     }
+    //   }
+    //   routeNames.append("]");
+
+    //   MessageCli.ROUTE_INFO.printMessage(routeNames.toString());
+
+    // } catch (InvalidCountryNameException e) {
+    //   MessageCli.INVALID_COUNTRY.printMessage(e.getMessage());
+    // }
+  }
 }
