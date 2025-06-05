@@ -78,7 +78,7 @@ public class MapEngine {
     //   continue;
     // }
 
-    // if (country != null) {
+    // if (country != null) {//why no need anymore?
 
     List<Country> neighbours = country.getNeighbours();
     StringBuilder names = new StringBuilder("[");
@@ -120,39 +120,17 @@ public class MapEngine {
 
   /** this method is invoked when the user run the command route. */
   public void showRoute() {
-    // MessageCli.INSERT_SOURCE.printMessage();
+    MessageCli.INSERT_SOURCE.printMessage();
 
-    // String sourceName = Utils.scanner.nextLine().trim();
-    // String destinationName = Utils.scanner.nextLine().trim();
+    String sourceName = countryInputCheck().getName(); // do i want it in string or country?
 
-    // try {
-    //   Country source = getCountryInfo(sourceName);
-    //   Country destination = getCountryInfo(destinationName);
+    MessageCli.INSERT_DESTINATION.printMessage();
 
-    //   if (source.equals(destination)) {
-    //     MessageCli.NO_CROSSBORDER_TRAVEL.printMessage();
-    //     return;
-    //   }
+    String destinationName = countryInputCheck().getName(); // same Q here...
 
-    //   List<Country> route = Utils.findShortestRoute(source, destination, countriesMap);
-    //   if (route == null || route.isEmpty()) {
-    //     throw new InvalidCountryNameException(
-    //         "No route found between " + sourceName + " and " + destinationName);
-    //   }
-
-    //   StringBuilder routeNames = new StringBuilder("[");
-    //   for (int i = 0; i < route.size(); i++) {
-    //     routeNames.append(route.get(i).getName());
-    //     if (i < route.size() - 1) {
-    //       routeNames.append(", ");
-    //     }
-    //   }
-    //   routeNames.append("]");
-
-    //   MessageCli.ROUTE_INFO.printMessage(routeNames.toString());
-
-    // } catch (InvalidCountryNameException e) {
-    //   MessageCli.INVALID_COUNTRY.printMessage(e.getMessage());
-    // }
+    if (sourceName.equals(destinationName)) {
+      MessageCli.NO_CROSSBORDER_TRAVEL.printMessage();
+      return;
+    }
   }
 }
