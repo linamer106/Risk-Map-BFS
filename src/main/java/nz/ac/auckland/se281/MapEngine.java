@@ -96,7 +96,7 @@ public class MapEngine {
         names.append("]");
 
         MessageCli.COUNTRY_INFO.printMessage(
-            countryName,
+            country.getName(),
             country.getContinent(),
             String.valueOf(country.getFuelCost()),
             names.toString());
