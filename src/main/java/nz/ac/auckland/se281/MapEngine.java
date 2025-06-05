@@ -173,9 +173,9 @@ public class MapEngine {
 
     if (sourceCountry.equals(destinationCountry)) {
       MessageCli.NO_CROSSBORDER_TRAVEL.printMessage();
-      MessageCli.FUEL_INFO.printMessage(Integer.toString(0));
       return;
     }
+
     List<Country> shortestPath = shortestPathToDestination(sourceCountry, destinationCountry);
 
     // Format path
