@@ -130,7 +130,7 @@ public class MapEngine {
       if (!word.isEmpty()) {
         capitalizedName
             .append(Character.toUpperCase(word.charAt(0)))
-            .append(word.substring(1).toLowerCase())
+            .append(word.substring(1))
             .append(" ");
       }
     }

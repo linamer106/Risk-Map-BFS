@@ -29,8 +29,8 @@ public class Country {
       if (!word.isEmpty()) {
         capitalizedName
             .append(Character.toUpperCase(word.charAt(0)))
-            .append(word.substring(1).toLowerCase())
-            .append(" ");
+            .append(word.substring(1))
+            .append(" "); // need both of this?
       }
     }
     return capitalizedName.toString().trim();
