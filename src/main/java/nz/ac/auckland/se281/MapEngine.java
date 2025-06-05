@@ -48,7 +48,94 @@ public class MapEngine {
   }
 
   /** this method is invoked when the user run the command info-country. */
-  public void showInfoCountry() {}
+  // public void showInfoCountry() {
+  //   while (true) {
+  //     MessageCli.INSERT_COUNTRY.printMessage(); // move inside loop
+  //     String countryName = scanner.nextLine().trim();
+  //     countryName = getCountryNameCapsFirstLetter(countryName);
+
+  //     Country country = countriesMap.get(countryName);
+
+  //     if (country != null) {
+  //       List<Country> neighbours = country.getNeighbours();
+  //       StringBuilder names = new StringBuilder();
+
+  //       for (int i = 0; i < neighbours.size(); i++) {
+  //         names.append(neighbours.get(i).getName());
+  //         if (i < neighbours.size() - 1) {
+  //           names.append(", ");
+  //         }
+  //       }
+
+  //       MessageCli.COUNTRY_INFO.printMessage(
+  //           countryName,
+  //           country.getContinent(),
+  //           String.valueOf(country.getFuelCost()),
+  //           names.toString());
+  //       break; // exit the loop after successful info print
+  //     } else {
+  //       MessageCli.INVALID_COUNTRY.printMessage(countryName);
+  //     }
+  //   }
+  // }
+
+  public void showInfoCountry() {
+    MessageCli.INSERT_COUNTRY.printMessage(); // Show prompt once at start
+
+    while (true) {
+      String countryName = Utils.scanner.nextLine().trim();
+
+      // Handle empty input
+      if (countryName.isEmpty()) {
+        MessageCli.INVALID_COUNTRY.printMessage(countryName);
+        continue;
+      }
+
+      countryName = getCountryNameCapsFirstLetter(countryName);
+      Country country = countriesMap.get(countryName);
+
+      if (country != null) {
+        List<Country> neighbours = country.getNeighbours();
+        StringBuilder names = new StringBuilder();
+
+        for (int i = 0; i < neighbours.size(); i++) {
+          names.append(neighbours.get(i).getName());
+          if (i < neighbours.size() - 1) {
+            names.append(", ");
+          }
+        }
+
+        MessageCli.COUNTRY_INFO.printMessage(
+            countryName,
+            country.getContinent(),
+            String.valueOf(country.getFuelCost()),
+            names.toString());
+        break; // Exit loop after successful output
+      } else {
+        MessageCli.INVALID_COUNTRY.printMessage(countryName);
+      }
+    }
+  }
+
+  public String getCountryNameCapsFirstLetter(String name) {
+    // code for taking country name and making the first letters of it caps
+    if (name == null || name.isEmpty()) {
+      return null;
+    }
+    // need to split string by space and then capitalize the first letter of each word and then
+    // return together with a single space inbewteen
+    String[] words = name.split(" ");
+    StringBuilder capitalizedName = new StringBuilder();
+    for (String word : words) {
+      if (!word.isEmpty()) {
+        capitalizedName
+            .append(Character.toUpperCase(word.charAt(0)))
+            .append(word.substring(1).toLowerCase())
+            .append(" ");
+      }
+    }
+    return capitalizedName.toString().trim();
+  }
 
   /** this method is invoked when the user run the command route. */
   public void showRoute() {}
