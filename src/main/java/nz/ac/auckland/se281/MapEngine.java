@@ -47,54 +47,44 @@ public class MapEngine {
     }
   }
 
-  /** this method is invoked when the user run the command info-country. */
-  // public void showInfoCountry() {
-  //   while (true) {
-  //     MessageCli.INSERT_COUNTRY.printMessage(); // move inside loop
-  //     String countryName = scanner.nextLine().trim();
-  //     countryName = getCountryNameCapsFirstLetter(countryName);
-
-  //     Country country = countriesMap.get(countryName);
-
-  //     if (country != null) {
-  //       List<Country> neighbours = country.getNeighbours();
-  //       StringBuilder names = new StringBuilder();
-
-  //       for (int i = 0; i < neighbours.size(); i++) {
-  //         names.append(neighbours.get(i).getName());
-  //         if (i < neighbours.size() - 1) {
-  //           names.append(", ");
-  //         }
-  //       }
-
-  //       MessageCli.COUNTRY_INFO.printMessage(
-  //           countryName,
-  //           country.getContinent(),
-  //           String.valueOf(country.getFuelCost()),
-  //           names.toString());
-  //       break; // exit the loop after successful info print
-  //     } else {
-  //       MessageCli.INVALID_COUNTRY.printMessage(countryName);
-  //     }
-  //   }
-  // }
+  private Country getCountryInfo(String name) throws InvalidCountryNameException {
+    String capitalizedName = getCountryNameCapsFirstLetter(name);
+    Country country = countriesMap.get(capitalizedName);
+    if (country == null) {
+      throw new InvalidCountryNameException(capitalizedName);
+    }
+    return country;
+  }
 
   public void showInfoCountry() {
     MessageCli.INSERT_COUNTRY.printMessage(); // Show prompt once at start
 
+    //     try {
+    //   method(...);
+    // } catch (MyCoolException e) {
+    //   // do something
+    // }
+
+    // public RETURN_TYPE method(...) {
+    //   ...
+    //   throw new MyCoolException();
+    //   ...
+    // }
+
     while (true) {
       String countryName = Utils.scanner.nextLine().trim();
 
-      // Handle empty input
-      if (countryName.isEmpty()) {
-        MessageCli.INVALID_COUNTRY.printMessage(countryName);
-        continue;
-      }
+      try {
+        Country country = getCountryInfo(countryName);
 
-      countryName = getCountryNameCapsFirstLetter(countryName);
-      Country country = countriesMap.get(countryName);
+        // // Handle empty input
+        // if (countryName.isEmpty()) {
+        //   MessageCli.INVALID_COUNTRY.printMessage(countryName);
+        //   continue;
+        // }
 
-      if (country != null) {
+        // if (country != null) {
+
         List<Country> neighbours = country.getNeighbours();
         StringBuilder names = new StringBuilder("[");
         for (int i = 0; i < neighbours.size(); i++) {
@@ -111,8 +101,10 @@ public class MapEngine {
             String.valueOf(country.getFuelCost()),
             names.toString());
         break; // Exit loop after successful output
-      } else {
-        MessageCli.INVALID_COUNTRY.printMessage(countryName);
+        // }
+      } catch (InvalidCountryNameException e) {
+        MessageCli.INVALID_COUNTRY.printMessage(
+            e.getMessage()); // why e. thing not just countryName?
       }
     }
   }
