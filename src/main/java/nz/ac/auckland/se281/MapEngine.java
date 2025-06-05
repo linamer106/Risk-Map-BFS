@@ -23,28 +23,28 @@ public class MapEngine {
     List<String> countries = Utils.readCountries();
     List<String> adjacencies = Utils.readAdjacencies();
 
-    // for (String line : countries) {
-    //   String[] parts = line.split(",");
-    //   String name = parts[0].trim();
-    //   String continent = parts[1].trim();
-    //   int fuelCost = Integer.parseInt(parts[2].trim());
-    //   Country country = new Country(name, continent, fuelCost);
-    //   countriesMap.put(name, country); // key: country name
-    // }
+    for (String line : countries) {
+      String[] parts = line.split(",");
+      String name = parts[0].trim();
+      String continent = parts[1].trim();
+      int fuelCost = Integer.parseInt(parts[2].trim());
+      Country country = new Country(name, continent, fuelCost);
+      countriesMap.put(name, country); // key: country name
+    }
 
-    // for (String line : adjacencies) {
-    //   String[] parts = line.split(",");
-    //   String countryName = parts[0].trim();
-    //   Country country = countriesMap.get(countryName);
+    for (String line : adjacencies) {
+      String[] parts = line.split(",");
+      String countryName = parts[0].trim();
+      Country country = countriesMap.get(countryName);
 
-    //   for (int i = 1; i < parts.length; i++) {
-    //     String neighborName = parts[i].trim();
-    //     Country neighbor = countriesMap.get(neighborName);
-    //     if (neighbor != null && !country.getNeighbours().contains(neighbor)) {
-    //       country.addNeighbor(neighbor);
-    //     }
-    //   }
-    // }
+      for (int i = 1; i < parts.length; i++) {
+        String neighborName = parts[i].trim();
+        Country neighbor = countriesMap.get(neighborName);
+        if (neighbor != null && !country.getNeighbours().contains(neighbor)) {
+          country.addNeighbor(neighbor);
+        }
+      }
+    }
   }
 
   /** this method is invoked when the user run the command info-country. */
