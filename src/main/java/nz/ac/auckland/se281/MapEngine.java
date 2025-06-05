@@ -3,6 +3,7 @@ package nz.ac.auckland.se281;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -11,9 +12,6 @@ import java.util.Set;
 
 /** This class is the main entry point. */
 public class MapEngine {
-
-  // private Map<String, List<String>> adjacentCountriesMap;
-  // private Map<String, List<String>> countryContinentAndFuelMap;
 
   private Map<String, Country> countriesMap = new HashMap<>();
 
@@ -174,6 +172,7 @@ public class MapEngine {
 
     if (sourceCountry.equals(destinationCountry)) {
       MessageCli.NO_CROSSBORDER_TRAVEL.printMessage();
+      MessageCli.FUEL_INFO.printMessage(Integer.toString(0));
       return;
     }
     List<Country> shortestPath = shortestPathToDestination(sourceCountry, destinationCountry);
@@ -188,7 +187,47 @@ public class MapEngine {
     }
     formattedRoute.append("]");
 
+    int fuelCostTotal = 0;
+    // Calculate total fuel cost
+    for (int i = 1; i < shortestPath.size() - 1; i++) {
+      fuelCostTotal += shortestPath.get(i).getFuelCost();
+    }
+
+    Set<String> continentsVisited =
+        new LinkedHashSet<>(); // dont need a class for contintents right?
+    // Collect unique continents visited
+    for (Country country : shortestPath) {
+      if (!continentsVisited.contains(country.getContinent())) {
+        continentsVisited.add(country.getContinent());
+      }
+    }
+
+    // Calculate fuel cost per continent
+    int fuelCostPerContinent = 0;
+    for (Country country : shortestPath) {
+      String continent = country.getContinent();
+      int fuelCost = country.getFuelCost();
+      fuelCostPerContinent += fuelCost;
+      // wrong!
+    }
+
+    // // Format continents
+    // StringBuilder formattedCountriesVisited = new StringBuilder("[");
+    // for (String continent : continentsVisited) {
+    //   formattedCountriesVisited.append(continent);
+    //   formattedCountriesVisited.append("("+ Integer.toString(fuelCostPerContinent.get(continent))
+    // +")");
+    //   formattedCountriesVisited.append(", ");
+    // }
+    // if (formattedCountriesVisited.length() > 1) {
+    //   formattedCountriesVisited.setLength(formattedCountriesVisited.length() - 2); // Remove
+    // trailing comma and space
+    // }
+    // formattedCountriesVisited.append("]");
+
     // Final message
     MessageCli.ROUTE_INFO.printMessage(formattedRoute.toString());
+    MessageCli.FUEL_INFO.printMessage(Integer.toString(fuelCostTotal));
+    // MessageCli.CONTINENT_INFO.printMessage(formattedCountriesVisited.toString());
   }
 }
