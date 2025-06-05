@@ -10,30 +10,10 @@ public class Country {
   private String name;
 
   public Country(String name, String continent, int fuelCost) {
-    this.name = getCountryNameCapsFirstLetter(name);
+    this.name = Utils.capitalizeFirstLetterOfEachWord(name);
     this.continent = continent;
     this.fuelCost = fuelCost;
     this.neighbours = new ArrayList<>();
-  }
-
-  public String getCountryNameCapsFirstLetter(String name) {
-    // code for taking country name and making the first letters of it caps
-    if (name == null || name.isEmpty()) {
-      return name;
-    }
-    // need to split string by space and then capitalize the first letter of each word and then
-    // return together with a single space inbewteen
-    String[] words = name.split(" ");
-    StringBuilder capitalizedName = new StringBuilder();
-    for (String word : words) {
-      if (!word.isEmpty()) {
-        capitalizedName
-            .append(Character.toUpperCase(word.charAt(0)))
-            .append(word.substring(1))
-            .append(" "); // need both of this?
-      }
-    }
-    return capitalizedName.toString().trim();
   }
 
   public void addNeighbor(Country neighbour) {

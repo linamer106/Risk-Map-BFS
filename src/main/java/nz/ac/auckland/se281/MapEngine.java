@@ -52,7 +52,7 @@ public class MapEngine {
   }
 
   private Country getCountryInfo(String name) throws InvalidCountryNameException {
-    String capitalizedName = getCountryNameCapsFirstLetter(name);
+    String capitalizedName = Utils.capitalizeFirstLetterOfEachWord(name);
     Country country = countriesMap.get(capitalizedName);
     if (country == null) {
       throw new InvalidCountryNameException(capitalizedName);
@@ -92,26 +92,6 @@ public class MapEngine {
         String.valueOf(country.getFuelCost()),
         names.toString()); // Exit loop after successful output
     // }
-  }
-
-  public String getCountryNameCapsFirstLetter(String name) {
-    // code for taking country name and making the first letters of it caps
-    if (name == null || name.isEmpty()) {
-      return null;
-    }
-    // need to split string by space and then capitalize the first letter of each word and then
-    // return together with a single space inbewteen
-    String[] words = name.split(" ");
-    StringBuilder capitalizedName = new StringBuilder();
-    for (String word : words) {
-      if (!word.isEmpty()) {
-        capitalizedName
-            .append(Character.toUpperCase(word.charAt(0)))
-            .append(word.substring(1))
-            .append(" ");
-      }
-    }
-    return capitalizedName.toString().trim();
   }
 
   private List<Country> shortestPathToDestination(
