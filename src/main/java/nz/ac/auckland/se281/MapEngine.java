@@ -76,14 +76,6 @@ public class MapEngine {
 
     Country country = countryInputCheck();
 
-    // // Handle empty input
-    // if (countryName.isEmpty()) {
-    //   MessageCli.INVALID_COUNTRY.printMessage(countryName);
-    //   continue;
-    // }
-
-    // if (country != null) {//why no need anymore?
-
     List<Country> neighbours = country.getNeighbours();
     StringBuilder names = new StringBuilder("[");
     for (int i = 0; i < neighbours.size(); i++) {
@@ -211,6 +203,26 @@ public class MapEngine {
       fuelPerContinent.put(continent, fuelPerContinent.getOrDefault(continent, 0) + fuelCost);
     }
 
+    // Find the continent with the most fuel usage
+    int maxFuelContinent = 0;
+    String maxContinent = null;
+
+    for (String continentHere : continentsVisited) {
+      int fuel = fuelPerContinent.getOrDefault(continentHere, 0);
+      if (fuel > maxFuelContinent) {
+        maxFuelContinent = fuel;
+        maxContinent = continentHere;
+      }
+    }
+
+    // Format continent with most Fuel usage
+    StringBuilder mostFuelContinentFormatted = new StringBuilder("");
+    mostFuelContinentFormatted
+        .append(maxContinent)
+        .append(" (")
+        .append(Integer.toString(maxFuelContinent))
+        .append(")");
+
     // Format continents
     StringBuilder formattedContinents = new StringBuilder("[");
     for (String continent : continentsVisited) {
@@ -227,5 +239,6 @@ public class MapEngine {
     MessageCli.ROUTE_INFO.printMessage(formattedRoute.toString());
     MessageCli.FUEL_INFO.printMessage(Integer.toString(fuelCostTotal));
     MessageCli.CONTINENT_INFO.printMessage(formattedContinents.toString());
+    MessageCli.FUEL_CONTINENT_INFO.printMessage(mostFuelContinentFormatted.toString());
   }
 }
