@@ -205,7 +205,7 @@ public class MapEngine {
 
     // Find the continent with the most fuel usage
     int maxFuelContinent = 0;
-    String maxContinent = null;
+    String maxContinent = sourceCountry.getContinent();
 
     for (String continentHere : continentsVisited) {
       int fuel = fuelPerContinent.getOrDefault(continentHere, 0);
