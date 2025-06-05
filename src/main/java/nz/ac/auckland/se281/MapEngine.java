@@ -1,5 +1,6 @@
 package nz.ac.auckland.se281;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -135,6 +136,18 @@ public class MapEngine {
 
     while (!queue.isEmpty()) {
       Country current = queue.poll();
+
+      // Check if we've reached the destination
+      if (current.equals(destinationCountry)) {
+        // Reconstruct path
+        List<Country> path = new ArrayList<>();
+        Country step = destinationCountry;
+        while (step != null) {
+          path.add(0, step); // insert at front
+          step = parentMap.get(step); // follow parent link
+        }
+        return path; // this will be the shortest path
+      }
 
       // BFS neighbors
       for (Country neighbor : current.getNeighbours()) {
