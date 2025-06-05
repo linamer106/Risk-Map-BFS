@@ -176,5 +176,16 @@ public class MapEngine {
       MessageCli.NO_CROSSBORDER_TRAVEL.printMessage();
       return;
     }
+    List<Country> shortestPath = shortestPathToDestination(sourceCountry, destinationCountry);
+
+    // Format path
+    StringBuilder formattedRoute = new StringBuilder("[");
+    for (int i = 0; i < shortestPath.size(); i++) {
+      formattedRoute.append(shortestPath.get(i).getName());
+      if (i < shortestPath.size() - 1) {
+        formattedRoute.append(", ");
+      }
+    }
+    formattedRoute.append("]");
   }
 }
