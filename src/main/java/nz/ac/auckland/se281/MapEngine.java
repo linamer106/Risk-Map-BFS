@@ -187,5 +187,8 @@ public class MapEngine {
       }
     }
     formattedRoute.append("]");
+
+    // Final message
+    MessageCli.ROUTE_INFO.printMessage(formattedRoute.toString());
   }
 }
