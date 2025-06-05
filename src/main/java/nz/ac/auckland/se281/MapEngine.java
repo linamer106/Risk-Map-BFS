@@ -96,14 +96,14 @@ public class MapEngine {
 
       if (country != null) {
         List<Country> neighbours = country.getNeighbours();
-        StringBuilder names = new StringBuilder();
-
+        StringBuilder names = new StringBuilder("[");
         for (int i = 0; i < neighbours.size(); i++) {
           names.append(neighbours.get(i).getName());
           if (i < neighbours.size() - 1) {
             names.append(", ");
           }
         }
+        names.append("]");
 
         MessageCli.COUNTRY_INFO.printMessage(
             countryName,
