@@ -15,6 +15,7 @@ import java.util.Set;
 public class MapEngine {
 
   private Map<String, Country> countriesMap = new HashMap<>();
+  private Map<Country, List<Country>> neighboursHashMap = new LinkedHashMap<>();
 
   public MapEngine() {
     // add other code here if you wan
@@ -44,8 +45,8 @@ public class MapEngine {
       for (int i = 1; i < parts.length; i++) {
         String neighborName = parts[i].trim();
         Country neighbor = countriesMap.get(neighborName);
-        if (neighbor != null && !country.getNeighbours().contains(neighbor)) {
-          country.addNeighbor(neighbor);
+        if (neighbor != null) {
+          neighboursHashMap = country.addNeighbor(neighbor, neighboursHashMap);
         }
       }
     }
@@ -76,7 +77,8 @@ public class MapEngine {
 
     Country country = countryInputCheck();
 
-    List<Country> neighbours = country.getNeighbours();
+    List<Country> neighbours = neighboursHashMap.get(country);
+
     StringBuilder names = new StringBuilder("[");
     for (int i = 0; i < neighbours.size(); i++) {
       names.append(neighbours.get(i).getName());
@@ -121,7 +123,7 @@ public class MapEngine {
       }
 
       // BFS neighbors
-      for (Country neighbor : current.getNeighbours()) {
+      for (Country neighbor : neighboursHashMap.get(current)) {
         if (!visited.contains(neighbor)) {
           queue.add(neighbor);
           visited.add(neighbor);

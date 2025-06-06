@@ -2,27 +2,29 @@ package nz.ac.auckland.se281;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Country {
   private String continent;
   private int fuelCost;
-  private List<Country> neighbours;
+
   private String name;
 
   public Country(String name, String continent, int fuelCost) {
     this.name = Utils.capitalizeFirstLetterOfEachWord(name);
     this.continent = continent;
     this.fuelCost = fuelCost;
-    this.neighbours = new ArrayList<>();
   }
 
-  public void addNeighbor(Country neighbour) {
-    neighbours.add(neighbour);
-  }
+  public Map<Country, List<Country>> addNeighbor(
+      Country neighbour, Map<Country, List<Country>> neighboursHashMap) {
+    neighboursHashMap.putIfAbsent(this, new ArrayList<>());
+    List<Country> currentNeighbors = neighboursHashMap.get(this);
 
-  public List<Country> getNeighbours() {
-    // return a copy of the neighbours list to avoid external modification??
-    return neighbours;
+    if (!currentNeighbors.contains(neighbour)) {
+      currentNeighbors.add(neighbour);
+    }
+    return neighboursHashMap;
   }
 
   public String getContinent() {
